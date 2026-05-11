@@ -3,29 +3,29 @@
 
 This is only for NVIDIA GPU's. Allows you to change display settings and easily switch between different profiles without having to manually adjust settings each time. Applies to the monitor and not a specific program.
 
-> **Fork mantido por [@th14g0cps](https://github.com/th14g0cps)** com as seguintes melhorias sobre o projeto original.
+> **Fork maintained by [@th14g0cps](https://github.com/th14g0cps)** with the following improvements over the original project.
 
 ## Changelog
 
-### Migração para .NET 10
-- Target framework atualizado de `net7.0-windows` para `net10.0-windows` em todos os projetos da solução.
-- Removidas referências hardcoded a DLLs e caminhos do .NET 7.
-- Pacote `System.Drawing.Common` removido (embutido no runtime do Windows Desktop .NET 10+).
+### Migration to .NET 10
+- Target framework updated from `net7.0-windows` to `net10.0-windows` across all projects in the solution.
+- Removed hardcoded references to .NET 7 DLLs and paths.
+- Removed `System.Drawing.Common` package (built into the Windows Desktop .NET 10+ runtime).
 
-### Process Rules — Automação por Processo
-Nova funcionalidade que monitora processos em execução e aplica perfis de cor automaticamente:
+### Process Rules — Automatic Profile Switching
+New feature that monitors running processes and automatically applies color profiles:
 
-- Crie regras associando um executável (ex: `cs2.exe`) a um monitor e a um perfil específico.
-- Quando o processo for detectado em execução, o perfil é aplicado automaticamente.
-- Quando o processo encerrar, todos os monitores retornam ao perfil **Default**.
-- Regras são persistidas em `Data\Data.json` junto com os demais dados.
-- O monitoramento ocorre em background com polling a cada 2 segundos, sem impacto perceptível de performance.
+- Create rules linking an executable (e.g. `cs2.exe`) to a specific monitor and profile.
+- When the process is detected as running, the profile is applied automatically.
+- When the process exits, all monitors revert to the **Default** profile.
+- Rules are persisted in `Data\Data.json` alongside all other application data.
+- Monitoring runs in the background with a 2-second polling interval, with negligible performance impact.
 
-**Como usar:**
-1. Na janela principal, localize a seção **Process Rules** na parte inferior.
-2. Preencha o nome do executável (com ou sem `.exe`), selecione o monitor e o perfil desejado.
-3. Clique em **Adicionar**.
-4. Para remover uma regra, clique em **Remover** na linha correspondente da lista.
+**How to use:**
+1. In the main window, find the **Process Rules** section at the bottom.
+2. Enter the executable name (with or without `.exe`), select the target monitor and profile.
+3. Click **Add**.
+4. To remove a rule, click **Remove** on the corresponding row in the list.
 
 
 
