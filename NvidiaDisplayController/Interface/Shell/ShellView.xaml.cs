@@ -3,12 +3,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using Ninject;
 using NvidiaDisplayController.Global;
 using NvidiaDisplayController.Global.Controllers;
 using NvidiaDisplayController.Global.Extensions;
+using NvidiaDisplayController.Interface.ProcessRules;
 using Application = System.Windows.Application;
 using System.Windows.Interop;
 using System.Windows.Input;
@@ -128,5 +130,11 @@ public partial class ShellView
             Hide();
 
         base.OnStateChanged(e);
+    }
+
+    private void OnRemoveRuleClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is System.Windows.Controls.Button btn && btn.DataContext is ProcessRuleViewModel vm)
+            vm.Remove();
     }
 }

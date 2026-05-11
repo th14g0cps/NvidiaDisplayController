@@ -67,6 +67,7 @@
             <RowDefinition Height="Auto" MinHeight="130" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel
             Orientation="Horizontal"
@@ -212,5 +213,103 @@
                 Margin="5"
                 Content="Revert" />
         </Grid>
+        <GroupBox
+            Margin="5"
+            Grid.Row="5">
+            <GroupBox.Header>
+                <TextBlock
+                    Text="Process Rules"
+                    FontWeight="SemiBold"
+                    Margin="2" />
+            </GroupBox.Header>
+            <StackPanel Margin="4">
+                <!-- Add rule form -->
+                <Grid Margin="0,0,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="140" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Content="EXE:" />
+                    <TextBox
+                        Grid.Column="1"
+                        Name="NewRuleExeName"
+                        VerticalAlignment="Center"
+                        ToolTip="Nome do executável, ex: cs2.exe" />
+                    <Label
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Margin="6,0,0,0"
+                        Content="Monitor:" />
+                    <ComboBox
+                        Grid.Column="3"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding Monitors}"
+                        SelectedItem="{Binding NewRuleMonitor}"
+                        DisplayMemberPath="Name" />
+                    <Label
+                        Grid.Column="4"
+                        VerticalAlignment="Center"
+                        Margin="6,0,0,0"
+                        Content="Perfil:" />
+                    <ComboBox
+                        Grid.Column="5"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding NewRuleProfiles}"
+                        SelectedItem="{Binding NewRuleProfile}"
+                        DisplayMemberPath="Name" />
+                    <Button
+                        Grid.Column="6"
+                        Name="AddProcessRule"
+                        IsEnabled="{Binding CanAddProcessRule}"
+                        Style="{DynamicResource DarkThemeButtonStyle}"
+                        Margin="6,0,0,0"
+                        Padding="10,4"
+                        Content="Adicionar" />
+                </Grid>
+                <!-- Rule list -->
+                <ListView
+                    ItemsSource="{Binding ProcessRules}"
+                    MaxHeight="150"
+                    BorderThickness="1">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Header="Executável"
+                                Width="160"
+                                DisplayMemberBinding="{Binding ExecutableName}" />
+                            <GridViewColumn
+                                Header="Monitor"
+                                Width="130"
+                                DisplayMemberBinding="{Binding MonitorName}" />
+                            <GridViewColumn
+                                Header="Perfil"
+                                Width="110"
+                                DisplayMemberBinding="{Binding ProfileName}" />
+                            <GridViewColumn
+                                Header=""
+                                Width="70">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Content="Remover"
+                                            Padding="4,2"
+                                            FontSize="11"
+                                            Click="OnRemoveRuleClick" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </mah:MetroWindow>

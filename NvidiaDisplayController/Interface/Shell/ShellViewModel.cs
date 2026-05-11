@@ -14,6 +14,7 @@ using NvidiaDisplayController.Global;
 using NvidiaDisplayController.Global.Controllers;
 using NvidiaDisplayController.Global.Extensions;
 using NvidiaDisplayController.Interface.Monitors;
+using NvidiaDisplayController.Interface.ProcessRules;
 using NvidiaDisplayController.Interface.Profiles;
 using NvidiaDisplayController.Objects.Entities;
 using NvidiaDisplayController.Objects.Factories;
@@ -38,6 +39,7 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
     private readonly IProfileViewModelFactory _profileViewModelFactory;
 
     private readonly RegistryController _registryController;
+    private readonly ProcessMonitorService _processMonitorService;
     private Computer _computer = null!;
     private ObservableCollection<MonitorViewModel> _monitors = null!;
     private List<Display>? _nvidiaDisplays;
@@ -48,6 +50,12 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
     private HotkeyManager? _hotkeyManager;
     private readonly Dictionary<int, ProfileViewModel> _hotkeyToProfile = new();
 
+    private ObservableCollection<ProcessRuleViewModel> _processRules = new();
+    private string _newRuleExeName = string.Empty;
+    private MonitorViewModel? _newRuleMonitor;
+    private ProfileViewModel? _newRuleProfile;
+    private ObservableCollection<ProfileViewModel> _newRuleProfiles = new();
+
     public ShellViewModel(
         IEventAggregator eventAggregator,
         MonitorViewModelFactory monitorViewModelFactory,
@@ -57,7 +65,8 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
         ILogger logger,
         DisplayController displayController,
         NvidiaDisplayWindowManager nvidiaDisplayWindowManager,
-        RegistryController registryController)
+        RegistryController registryController,
+        ProcessMonitorService processMonitorService)
     {
         _eventAggregator = eventAggregator;
         _monitorViewModelFactory = monitorViewModelFactory;
@@ -68,6 +77,7 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
         _displayController = displayController;
         _nvidiaDisplayWindowManager = nvidiaDisplayWindowManager;
         _registryController = registryController;
+        _processMonitorService = processMonitorService;
 
         _eventAggregator.SubscribeOnPublishedThread(this);
 
@@ -199,6 +209,98 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
         _registryController.RegisterForStartWithWindows(IsStartWithWindows);
     }
 
+    public ObservableCollection<ProcessRuleViewModel> ProcessRules
+    {
+        get => _processRules;
+        set
+        {
+            if (Equals(value, _processRules)) return;
+            _processRules = value;
+            NotifyOfPropertyChange();
+        }
+    }
+
+    public string NewRuleExeName
+    {
+        get => _newRuleExeName;
+        set
+        {
+            if (value == _newRuleExeName) return;
+            _newRuleExeName = value;
+            NotifyOfPropertyChange();
+            NotifyOfPropertyChange(nameof(CanAddProcessRule));
+        }
+    }
+
+    public MonitorViewModel? NewRuleMonitor
+    {
+        get => _newRuleMonitor;
+        set
+        {
+            if (Equals(value, _newRuleMonitor)) return;
+            _newRuleMonitor = value;
+            NotifyOfPropertyChange();
+            NotifyOfPropertyChange(nameof(CanAddProcessRule));
+            NewRuleProfile = null;
+            NewRuleProfiles = value != null
+                ? new ObservableCollection<ProfileViewModel>(value.Profiles.Where(p => !p.IsDefault))
+                : new ObservableCollection<ProfileViewModel>();
+        }
+    }
+
+    public ObservableCollection<ProfileViewModel> NewRuleProfiles
+    {
+        get => _newRuleProfiles;
+        set
+        {
+            if (Equals(value, _newRuleProfiles)) return;
+            _newRuleProfiles = value;
+            NotifyOfPropertyChange();
+        }
+    }
+
+    public ProfileViewModel? NewRuleProfile
+    {
+        get => _newRuleProfile;
+        set
+        {
+            if (Equals(value, _newRuleProfile)) return;
+            _newRuleProfile = value;
+            NotifyOfPropertyChange();
+            NotifyOfPropertyChange(nameof(CanAddProcessRule));
+        }
+    }
+
+    public bool CanAddProcessRule =>
+        !string.IsNullOrWhiteSpace(NewRuleExeName) && NewRuleMonitor != null && NewRuleProfile != null;
+
+    public void AddProcessRule()
+    {
+        var exe = NewRuleExeName.Trim();
+        var rule = new ProcessRule(
+            exe,
+            NewRuleMonitor!.Monitor.DisplayDevicePath,
+            NewRuleMonitor.Name,
+            NewRuleProfile!.Profile.Name);
+
+        Computer.ProcessRules.Add(rule);
+
+        var vm = new ProcessRuleViewModel(rule) { RemoveRequested = OnProcessRuleRemoved };
+        ProcessRules.Add(vm);
+
+        Write();
+
+        NewRuleExeName = string.Empty;
+        NewRuleProfile = null;
+    }
+
+    private void OnProcessRuleRemoved(ProcessRuleViewModel vm)
+    {
+        Computer.ProcessRules.Remove(vm.Rule);
+        ProcessRules.Remove(vm);
+        Write();
+    }
+
     private void Start()
     {
         _monitors = new ObservableCollection<MonitorViewModel>();
@@ -209,9 +311,25 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
             {
                 Computer = computer;
                 Computer.Monitors.ForEach(BuildMonitorViewModel);
+                LoadProcessRules();
             })
             .Do(_ => LoadNvidiaDisplays())
-            .Do(_ => ApplySettingsOnStart());
+            .Do(_ => ApplySettingsOnStart())
+            .Do(_ => StartProcessMonitor());
+    }
+
+    private void LoadProcessRules()
+    {
+        foreach (var rule in Computer.ProcessRules)
+        {
+            var vm = new ProcessRuleViewModel(rule) { RemoveRequested = OnProcessRuleRemoved };
+            _processRules.Add(vm);
+        }
+    }
+
+    private void StartProcessMonitor()
+    {
+        _processMonitorService.Start(Computer, Monitors.ToList(), _nvidiaDisplays);
     }
 
     private void BuildMonitorViewModel(Monitor monitor)

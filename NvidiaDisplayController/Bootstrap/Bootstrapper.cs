@@ -11,6 +11,7 @@ using Ninject;
 using Ninject.Extensions.Conventions;
 using NLog;
 using NvAPIWrapper;
+using NvidiaDisplayController.Global;
 using NvidiaDisplayController.Global.Controllers;
 using NvidiaDisplayController.Global.Extensions;
 using NvidiaDisplayController.Interface.Shell;
@@ -85,6 +86,7 @@ public class Bootstrapper : BootstrapperBase
         _kernel.Bind<IWindowManager>().To<WindowManager>();
         _kernel.Bind<IEventAggregator>().To<EventAggregator>().InSingletonScope();
         _kernel.Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger()).InSingletonScope();
+        _kernel.Bind<ProcessMonitorService>().ToSelf().InSingletonScope();
 
         _kernel.Bind(x => x.FromThisAssembly()
             .SelectAllInterfaces()

@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net7.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <Nullable>enable</Nullable>
         <ApplicationIcon>Resources\desktop.ico</ApplicationIcon>
@@ -30,7 +30,6 @@
         <PackageReference Include="NLog.Config" Version="4.7.15" />
         <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />
         <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-        <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -62,9 +61,7 @@
         <None Update="Resources\desktop.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="..\..\..\Users\Mario\.nuget\packages\nlog.config\4.7.15\contentFiles\any\any\NLog.config">
-          <Link>Configs\NLog.config</Link>
-        </None>
+
     </ItemGroup>
 
     <ItemGroup>
@@ -81,17 +78,6 @@
         <ProjectReference Include="..\WindowsDisplayAPI-master\WindowsDisplayAPI\WindowsDisplayAPI.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="PresentationFramework">
-        <HintPath>..\Libraries\PresentationFramework.dll</HintPath>
-      </Reference>
-      <Reference Include="System.Windows.Forms">
-        <HintPath>..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.5\System.Windows.Forms.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 
-    <ItemGroup>
-      <ReferencePathWithRefAssemblies Update="C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\7.0.5\ref\net7.0\PresentationFramework.dll" />
-    </ItemGroup>
 
 </Project>

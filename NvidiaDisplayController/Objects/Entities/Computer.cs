@@ -7,4 +7,5 @@ public class Computer
     public bool IsStartWithWindows { get; set; }
     public bool IsApplySettingsOnStart { get; set; }
     public List<Monitor> Monitors { get; set; } = new();
+    public List<ProcessRule> ProcessRules { get; set; } = new();
 }
