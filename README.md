@@ -59,8 +59,6 @@ All the data is stored where the executable resides (\InstallLocation\Data\Data.
 
 ## Screenshot
 
-![App Screenshot](https://github.com/therealmariolaurianti/NvidiaDisplayController/assets/25336894/8be460e9-f572-498b-99fe-89fe6a8a722d/468x300?text=App+Screenshot+Here)
-
-![App Screenshot](https://github.com/therealmariolaurianti/NvidiaDisplayController/assets/25336894/cc1304d0-23fb-452f-8c91-10f87f412800/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://github.com/user-attachments/assets/cf9804e3-7d16-45f7-9b28-d85b0477ddde)
 
 
