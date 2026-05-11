@@ -3,7 +3,29 @@
 
 This is only for NVIDIA GPU's. Allows you to change display settings and easily switch between different profiles without having to manually adjust settings each time. Applies to the monitor and not a specific program.
 
+> **Fork mantido por [@th14g0cps](https://github.com/th14g0cps)** com as seguintes melhorias sobre o projeto original.
 
+## Changelog
+
+### Migração para .NET 10
+- Target framework atualizado de `net7.0-windows` para `net10.0-windows` em todos os projetos da solução.
+- Removidas referências hardcoded a DLLs e caminhos do .NET 7.
+- Pacote `System.Drawing.Common` removido (embutido no runtime do Windows Desktop .NET 10+).
+
+### Process Rules — Automação por Processo
+Nova funcionalidade que monitora processos em execução e aplica perfis de cor automaticamente:
+
+- Crie regras associando um executável (ex: `cs2.exe`) a um monitor e a um perfil específico.
+- Quando o processo for detectado em execução, o perfil é aplicado automaticamente.
+- Quando o processo encerrar, todos os monitores retornam ao perfil **Default**.
+- Regras são persistidas em `Data\Data.json` junto com os demais dados.
+- O monitoramento ocorre em background com polling a cada 2 segundos, sem impacto perceptível de performance.
+
+**Como usar:**
+1. Na janela principal, localize a seção **Process Rules** na parte inferior.
+2. Preencha o nome do executável (com ou sem `.exe`), selecione o monitor e o perfil desejado.
+3. Clique em **Adicionar**.
+4. Para remover uma regra, clique em **Remover** na linha correspondente da lista.
 
 
 
