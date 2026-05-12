@@ -5,14 +5,18 @@ This is only for NVIDIA GPU's. Allows you to change display settings and easily 
 
 > **Fork maintained by [@th14g0cps](https://github.com/th14g0cps)** with the following improvements over the original project.
 
+---
+
 ## Changelog
 
-### Migration to .NET 10
+### v2.0.0
+
+#### Migration to .NET 10
 - Target framework updated from `net7.0-windows` to `net10.0-windows` across all projects in the solution.
 - Removed hardcoded references to .NET 7 DLLs and paths.
 - Removed `System.Drawing.Common` package (built into the Windows Desktop .NET 10+ runtime).
 
-### Process Rules — Automatic Profile Switching
+#### Process Rules — Automatic Profile Switching
 New feature that monitors running processes and automatically applies color profiles:
 
 - Create rules linking an executable (e.g. `cs2.exe`) to a specific monitor and profile.
@@ -21,44 +25,84 @@ New feature that monitors running processes and automatically applies color prof
 - Rules are persisted in `Data\Data.json` alongside all other application data.
 - Monitoring runs in the background with a 2-second polling interval, with negligible performance impact.
 
-**How to use:**
-1. In the main window, find the **Process Rules** section at the bottom.
-2. Enter the executable name (with or without `.exe`), select the target monitor and profile.
-3. Click **Add**.
-4. To remove a rule, click **Remove** on the corresponding row in the list.
+#### Browse Executable
+- Instead of typing the executable name manually, a **Browse...** button opens a file picker filtered to `.exe` files.
 
+#### Start with Windows
+- A **Start with Windows** checkbox registers or unregisters the application in the Windows startup registry key (`HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`).
 
+#### UI Improvements
+- Main window is now resizable with a minimum width of 750px — dropdowns no longer break on smaller layouts.
+- **Buy Me a Coffee** button added to the top-right toolbar, linking to [buymeacoffee.com/th14g0](https://buymeacoffee.com/th14g0).
+- UAC manifest embedded — the app automatically requests administrator elevation on launch (required by Windows to apply display color settings).
 
+---
 
 ## Features
 
-- Adjust the brightness, contrast, gamma, and digital vibrance settings to your preference.
-- Automatically detects all displays connected to the computer and creates a base default profile for each.
-- Configure settings for up to five profiles for each monitor to easily switch between different configurations.
-- Set a profile as the default so no need to select each time. Optionally, set the default profiles to apply to all monitors on start across all displays.
-- Minimizes to system tray to avoid clutter on taskbar. Right click icon to open/close application once minimized.
-- View selected profiles when hoving mouse over icon in taskbar.
-- Extremely lightweight with low resource use (under 100 MB)
+- Adjust brightness, contrast, gamma, and digital vibrance per monitor.
+- Automatically detects all displays connected to the GPU and creates a default profile for each.
+- Up to five profiles per monitor for quick switching between configurations.
+- Apply a profile as active — optionally auto-apply on Windows startup.
+- **Process Rules:** automatically switch profiles when specific applications are running.
+- **Start with Windows** option built into the UI.
+- Minimizes to the system tray. Right-click the tray icon to show or exit.
+- Hover over the tray icon to see the active profile for each monitor.
+- Hotkey support: assign a keyboard shortcut to any profile for instant switching.
 
+---
 
 ## Requirements
 
-- NVIDIA GPU (with installed drivers)
-- Windows (tested with 10/11)
+- NVIDIA GPU with installed drivers
+- Windows 10 or 11
+- [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) — required to run the application
 
+---
 
 ## How to Use
 
-Run the executable and select a monitor from the collection at the top. To create a profile hit the green plus symbol in the Profile section. From there you name the Profile and proceed to set the settings in the Detail section. 
+### First run
+1. Run `NvidiaDisplayController.exe` as Administrator (a UAC prompt will appear automatically).
+2. The app detects all monitors connected to your GPU and creates a **Default** profile for each.
 
-Settings will not be applied until the 'Apply' button is pressed at the bottom. To update the settings of a profile WITHOUT applying them to the monitor click the 'Update' button. To revert changes made before applying hit the 'Revert' button.
+### Managing profiles
+1. Select a monitor from the **Monitors** section.
+2. Click the **+** button in the **Profiles** section to create a new profile and give it a name.
+3. Adjust **Brightness**, **Contrast**, **Gamma**, and **Digital Vibrance** in the **Profile Details** section.
+4. Click **Apply** to apply the settings to the monitor immediately.
+5. Click **Update** to save changes to the profile without applying them.
+6. Click **Revert** to discard unsaved changes.
 
-All the data is stored where the executable resides (\InstallLocation\Data\Data.json). If you need to reset the data, there is a help button at the top where you can do that.
+### Process Rules (automatic switching)
+1. Scroll to the **Process Rules** section at the bottom of the window.
+2. Click **Browse...** and select the target `.exe` file.
+3. Choose the **Monitor** and **Profile** to activate when that process runs.
+4. Click **Add**.
+5. When the process starts, the profile switches automatically. When it exits, all monitors revert to their **Default** profile.
+6. To delete a rule, click **Remove** on the corresponding row.
 
+### Startup options
+- **Apply Settings on Start** — re-applies the active profile for all monitors every time the app launches.
+- **Start with Windows** — registers the app in Windows startup so it launches automatically on login.
 
+### Hotkeys
+- Select a profile and assign a key combination (Ctrl / Alt / Shift + key) in the **Profile Details** section.
+- Click **Update** to save. The hotkey will activate that profile globally even when the app is minimized.
+
+### Reset
+- Click the **?** (About) button in the top-right corner and use the **Reset** button to wipe all data and start fresh.
+
+---
 
 ## Screenshot
 
 ![App Screenshot](https://github.com/user-attachments/assets/cf9804e3-7d16-45f7-9b28-d85b0477ddde)
 
+---
 
+## Support
+
+If you find this useful, consider buying me a coffee ☕
+
+[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/th14g0)
