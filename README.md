@@ -97,7 +97,7 @@ New feature that monitors running processes and automatically applies color prof
 
 ## Screenshot
 
-![App Screenshot](https://github.com/user-attachments/assets/cf9804e3-7d16-45f7-9b28-d85b0477ddde)
+![App Screenshot](https://github.com/user-attachments/assets/71877578-5fa4-4d74-959f-7d746a5330db)
 
 ---
 
