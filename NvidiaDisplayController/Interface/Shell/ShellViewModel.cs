@@ -196,7 +196,7 @@ public class ShellViewModel : Conductor<IScreen>, IHandle<ProfileSettingsEvent>
     public string ProfileGroupBoxText =>
         $"Profiles [{(SelectedMonitor == null ? 0 : SelectedMonitor.Profiles.Count)}/5]";
 
-    private static string PaypalLink => "https://www.paypal.com/donate/?hosted_button_id=FT6HS8V8R4XYC";
+    private static string PaypalLink => "https://buymeacoffee.com/th14g0";
 
     public Task HandleAsync(ProfileSettingsEvent message, CancellationToken cancellationToken)
     {

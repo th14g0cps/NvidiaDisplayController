@@ -132,6 +132,22 @@ public partial class ShellView
         base.OnStateChanged(e);
     }
 
+    private void OnBrowseExecutableClick(object sender, RoutedEventArgs e)
+    {
+        var dialog = new System.Windows.Forms.OpenFileDialog
+        {
+            Title = "Select Executable",
+            Filter = "Executables (*.exe)|*.exe",
+            CheckFileExists = true
+        };
+
+        if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+            var vm = (ShellViewModel)DataContext;
+            vm.NewRuleExeName = System.IO.Path.GetFileName(dialog.FileName);
+        }
+    }
+
     private void OnRemoveRuleClick(object sender, RoutedEventArgs e)
     {
         if (sender is System.Windows.Controls.Button btn && btn.DataContext is ProcessRuleViewModel vm)

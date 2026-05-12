@@ -7,12 +7,15 @@
         <Nullable>enable</Nullable>
         <ApplicationIcon>Resources\desktop.ico</ApplicationIcon>
         <UseWindowsForms>True</UseWindowsForms>
-        <Company>MarioLaurianti</Company>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
+        <Company>Thiago Mortari</Company>
+        <Authors>Thiago Mortari</Authors>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <FileVersion>2.0.0.0</FileVersion>
+        <Copyright>Copyright © Thiago Mortari 2026</Copyright>
         <Title>Nvidia Display Controller</Title>
         <RepositoryUrl>https://github.com/therealmariolaurianti/NvidiaDisplayController</RepositoryUrl>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
 
     <ItemGroup>
@@ -72,6 +75,7 @@
 
     <ItemGroup>
         <Resource Include="Resources\desktop.png" />
+        <Resource Include="Resources\buymeacoffee.png" />
     </ItemGroup>
 
     <ItemGroup>

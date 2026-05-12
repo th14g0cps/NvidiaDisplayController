@@ -30,6 +30,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Image
                     Source="pack://application:,,,/NvidiaDisplayController;component/Resources/desktop.png"
@@ -54,6 +55,14 @@
                     VerticalAlignment="Center"
                     FontWeight="SemiBold"
                     Content="Mario Laurianti" />
+                <TextBlock
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="11"
+                    Foreground="Gray"
+                    Margin="0,2,0,0"
+                    Text="Modified by Thiago Mortari" />
             </Grid>
             <Grid
                 VerticalAlignment="Center"
@@ -68,7 +77,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="5,0"
-                    Text="Build: 1.0.0" />
+                    Text="Build: 2.0.0" />
                 <Grid
                     Grid.Row="1"
                     HorizontalAlignment="Left"

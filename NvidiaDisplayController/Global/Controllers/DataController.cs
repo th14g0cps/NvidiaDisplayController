@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using FluentResults;
 using Newtonsoft.Json;
 using NvidiaDisplayController.Objects;
@@ -10,18 +9,9 @@ namespace NvidiaDisplayController.Global.Controllers;
 
 public class DataController
 {
-    private static readonly string _location = Assembly.GetExecutingAssembly().Location;
-    private static readonly string? _directory = Path.GetDirectoryName(_location);
+    private static readonly string _directory = AppContext.BaseDirectory;
 
-    public string DataPath
-    {
-        get
-        {
-            if (_directory != null)
-                return Path.Combine(_directory, @"Data\Data.json");
-            throw new Exception();
-        }
-    }
+    public string DataPath => Path.Combine(_directory, @"Data\Data.json");
 
     public void Write(Computer data)
     {
@@ -35,15 +25,15 @@ public class DataController
 
     public Result<Computer> Load()
     {
-        using StreamReader reader = new(DataPath);
-        {
-            var json = reader.ReadToEnd();
+        if (!File.Exists(DataPath))
+            return Result.Fail(new Error("Data file not found."));
 
-            var computer = JsonConvert.DeserializeObject<Computer>(json);
-            reader.Close();
+        var json = File.ReadAllText(DataPath);
 
-            var result = computer is null ? Result.Fail(new Error("")) : Result.Ok(computer);
-            return result;
-        }
+        if (string.IsNullOrWhiteSpace(json))
+            return Result.Fail(new Error("Data file is empty."));
+
+        var computer = JsonConvert.DeserializeObject<Computer>(json);
+        return computer is null ? Result.Fail(new Error("Failed to deserialize data.")) : Result.Ok(computer);
     }
 }
