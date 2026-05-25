@@ -9,6 +9,16 @@ This is only for NVIDIA GPU's. Allows you to change display settings and easily 
 
 ## Changelog
 
+### v2.0.1
+
+#### Fixed
+- **Start with Windows now works correctly** — Fixed issue where the "Start with Windows" option wasn't functioning due to UAC elevation restrictions. Now uses Windows Task Scheduler (`schtasks.exe`) instead of registry, allowing the app to launch at startup with admin privileges.
+
+#### Infrastructure
+- Updated GitHub Actions workflow to Node.js 24 compatible versions.
+- Suppressed XML comment warnings from the `WindowsDisplayAPI` external library.
+- Added automated build and release workflow to compile self-contained `.exe` on every push and create GitHub Releases on version tags.
+
 ### v2.0.0
 
 #### Migration to .NET 10
