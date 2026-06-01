@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -25,7 +26,10 @@ namespace NvidiaDisplayController.Bootstrap;
 
 public class Bootstrapper : BootstrapperBase
 {
+    private const string MutexName = "Global\\NvidiaDisplayController.SingleInstance";
+
     private readonly IKernel _kernel;
+    private Mutex? _singleInstanceMutex;
 
     // Used for Window Management
     [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -105,46 +109,44 @@ public class Bootstrapper : BootstrapperBase
 
     private Result CheckIfApplicationIsRunning()
     {
+        _singleInstanceMutex = new Mutex(true, MutexName, out var isFirstInstance);
+        if (isFirstInstance) return Result.Ok();
+
+        FocusExistingInstance();
+        Application.Current.Shutdown();
+        return Result.Fail("Application is already running.");
+    }
+
+    private void FocusExistingInstance()
+    {
         var currentProcess = Process.GetCurrentProcess();
-        var existingProcess = Process.GetProcessesByName(currentProcess.ProcessName)
-                                    .FirstOrDefault(p => p.Id != currentProcess.Id);
+        var existingProcesses = Process.GetProcessesByName(currentProcess.ProcessName)
+            .Where(p => p.Id != currentProcess.Id)
+            .ToArray();
 
-        // if there's no other process of this running, we continue
-        if (existingProcess == null) return Result.Ok();
-
-        // if we find an existing process, find the window and bring it to the front
         IntPtr foundHandle = IntPtr.Zero;
 
-        // we need to partial match since the window title changes based on GPU
         EnumWindows((hWnd, lParam) =>
         {
-            StringBuilder sb = new StringBuilder(256);
+            var sb = new StringBuilder(256);
             GetWindowText(hWnd, sb, sb.Capacity);
-            string title = sb.ToString();
+            var title = sb.ToString();
 
-            if (title.StartsWith("Adjust Displays")) 
-            {
-                foundHandle = hWnd;
-                return false; 
-            }
-            return true;
+            if (!title.StartsWith("Adjust Displays")) return true;
+
+            foundHandle = hWnd;
+            return false;
         }, IntPtr.Zero);
 
-        if (foundHandle != IntPtr.Zero)
-        {
-            _fileLogger.Info("Found existing window via partial match. Restoring...");
-            ShowWindow(foundHandle, SW_RESTORE);
-            SetForegroundWindow(foundHandle);
+        if (foundHandle == IntPtr.Zero)
+            foundHandle = existingProcesses.Select(p => p.MainWindowHandle).FirstOrDefault(h => h != IntPtr.Zero);
 
-            // we can't force the other instance to bring itself to the front
-            // tell it to do it itself
-            PostMessage(foundHandle, WM_SHOWME, IntPtr.Zero, IntPtr.Zero);
+        if (foundHandle == IntPtr.Zero) return;
 
-            Application.Current.Shutdown();
-            return Result.Fail("Focused existing instance.");
-        }
-
-    return Result.Ok();
+        _fileLogger.Info("Found existing window. Restoring...");
+        ShowWindow(foundHandle, SW_RESTORE);
+        SetForegroundWindow(foundHandle);
+        PostMessage(foundHandle, WM_SHOWME, IntPtr.Zero, IntPtr.Zero);
     }
 
     private Result TryStartNvidia()
@@ -214,5 +216,12 @@ public class Bootstrapper : BootstrapperBase
     protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         _fileLogger.Error(e);
+    }
+
+    protected override void OnExit(object sender, EventArgs e)
+    {
+        _singleInstanceMutex?.ReleaseMutex();
+        _singleInstanceMutex?.Dispose();
+        base.OnExit(sender, e);
     }
 }

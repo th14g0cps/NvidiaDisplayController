@@ -15,6 +15,10 @@ public class DataController
 
     public void Write(Computer data)
     {
+        var directory = Path.GetDirectoryName(DataPath);
+        if (!string.IsNullOrEmpty(directory))
+            Directory.CreateDirectory(directory);
+
         var serializeObject = JsonConvert.SerializeObject(data, new JsonSerializerSettings
         {
             PreserveReferencesHandling = PreserveReferencesHandling.Objects
