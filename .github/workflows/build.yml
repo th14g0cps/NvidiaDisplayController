@@ -22,6 +22,9 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Restore dependencies
         run: dotnet restore NvidiaDisplayController.sln
 
@@ -38,6 +41,16 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
           --output publish-github
 
+      - name: Build Microsoft Store package
+        run: >
+          msbuild NvidiaDisplayController.Package/NvidiaDisplayController.Package.wapproj
+          /restore
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:UapAppxPackageBuildMode=StoreUpload
+          /p:AppxBundle=Never
+          /p:AppxPackageDir="${{ github.workspace }}\AppPackages\\"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4.3.6
         with:
@@ -45,6 +58,10 @@ jobs:
           path: |
             publish-github/NvidiaDisplayController.exe
             publish-github/Data/
+            AppPackages/**/*.msixupload
+            AppPackages/**/*.appxupload
+            AppPackages/**/*.msix
+            AppPackages/**/*.appx
 
   release:
     needs: build
@@ -63,6 +80,9 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
       - name: Restore dependencies
         run: dotnet restore NvidiaDisplayController.sln
 
@@ -76,11 +96,26 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
           --output publish-github
 
+      - name: Build Microsoft Store package
+        run: >
+          msbuild NvidiaDisplayController.Package/NvidiaDisplayController.Package.wapproj
+          /restore
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:UapAppxPackageBuildMode=StoreUpload
+          /p:AppxBundle=Never
+          /p:AppxPackageDir="${{ github.workspace }}\AppPackages\\"
+
       - name: Create zip
         run: Compress-Archive -Path publish-github/* -DestinationPath NvidiaDisplayController-${{ github.ref_name }}.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2.0.5
         with:
-          files: NvidiaDisplayController-${{ github.ref_name }}.zip
+          files: |
+            NvidiaDisplayController-${{ github.ref_name }}.zip
+            AppPackages/**/*.msixupload
+            AppPackages/**/*.appxupload
+            AppPackages/**/*.msix
+            AppPackages/**/*.appx
           generate_release_notes: true

@@ -9,7 +9,7 @@
   <Identity
     Name="56037Th14g0.NvidiaDisplayController"
     Publisher="CN=4434D8CF-C1F0-4CA7-B032-FE18708C81A8"
-    Version="2.0.2.0"
+    Version="2.0.3.0"
     ProcessorArchitecture="x64" />
 
   <Properties>
