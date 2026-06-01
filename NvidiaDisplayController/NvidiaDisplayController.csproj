@@ -9,11 +9,11 @@
         <UseWindowsForms>True</UseWindowsForms>
         <Company>Thiago Mortari</Company>
         <Authors>Thiago Mortari</Authors>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-        <FileVersion>2.0.0.0</FileVersion>
+        <AssemblyVersion>2.0.2.0</AssemblyVersion>
+        <FileVersion>2.0.2.0</FileVersion>
         <Copyright>Copyright © Thiago Mortari 2026</Copyright>
         <Title>Nvidia Display Controller</Title>
-        <RepositoryUrl>https://github.com/therealmariolaurianti/NvidiaDisplayController</RepositoryUrl>
+        <RepositoryUrl>https://github.com/th14g0cps/NvidiaDisplayController</RepositoryUrl>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <NoWarn>$(NoWarn);CS1591</NoWarn>

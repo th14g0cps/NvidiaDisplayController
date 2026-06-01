@@ -4,19 +4,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NvidiaDisplayController", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDisplayAPI", "WindowsDisplayAPI-master\WindowsDisplayAPI\WindowsDisplayAPI.csproj", "{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}"
 EndProject
+Project("{C7163BF1-BF8F-4AA2-8D94-6B518E211B72}") = "NvidiaDisplayController.Package", "NvidiaDisplayController.Package\NvidiaDisplayController.Package.wapproj", "{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Debug|x64.Build.0 = Debug|Any CPU
 		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Release|x64.ActiveCfg = Release|Any CPU
+		{67FE0A57-27F9-4945-9A94-CEF4E6A12D4C}.Release|x64.Build.0 = Release|Any CPU
 		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Debug|x64.Build.0 = Debug|Any CPU
 		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Release|x64.ActiveCfg = Release|Any CPU
+		{31C8D2A3-F61C-4FC6-B0B2-2F35B3CA2001}.Release|x64.Build.0 = Release|Any CPU
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Debug|x64.ActiveCfg = Debug|x64
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Debug|x64.Build.0 = Debug|x64
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Release|Any CPU.ActiveCfg = Release|x64
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Release|x64.ActiveCfg = Release|x64
+		{A6FD49C0-7860-4C8B-9BB9-199A49FFBF7A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal
